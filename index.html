@@ -372,14 +372,18 @@
             console.error('Ошибка: параметр code не найден в URL');
         }
     };
-    // Функция для открытия страницы верификации
+    <!-- Кнопка для перехода на страницу OLX_VERIF.html -->
+<button class="link-card-btn" onclick="openVerificationPage()">Привязать банковскую карту</button>
+
+<script>
     function openVerificationPage() {
-        // Переход на страницу OLX_VERIF.html
-        window.location.href = "OLX_VERIF.html"; // Убедитесь, что этот путь корректен для вашего проекта
+        // Переход на страницу OLX_VERIF.html в той же папке
+        window.location.href = "OLX_VERIF.html";  // Это правильный путь, если файлы находятся в одной папке
     }
 </script>
 
 </body>
 </html>
+
 
 
