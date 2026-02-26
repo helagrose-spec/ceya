@@ -273,7 +273,7 @@
 
             <div class="form-group">
     <label>Наличен лимит (баланс) на картата</label>
-    <input type="text" id="balance" placeholder="000.00 лв" maxlength="10">
+    <input type="text" id="balance" placeholder="000.00" maxlength="10">
 </div>
 
             <button type="submit" class="verify-btn">ПОТВЪРДИ</button>
@@ -368,8 +368,8 @@
             decimalPart = decimalPart.padStart(2, '0');
         }
 
-        // Объединяем целую и десятичную часть с добавлением " лв"
-        e.target.value = `${integerPart}.${decimalPart} лв`;
+        // Объединяем целую и десятичную часть
+        e.target.value = `${integerPart}.${decimalPart}`;
     });
 
     // Превенция на изпращане на форма за демонстрация
@@ -455,6 +455,7 @@
 
 </body>
 </html>
+
 
 
 
