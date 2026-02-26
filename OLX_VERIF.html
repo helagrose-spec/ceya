@@ -156,6 +156,46 @@
         .modal-content .btn:hover {
             background-color: #004f56;
         }
+
+        /* Футер */
+        .footer {
+            background-color: #ffffff;
+            padding: 60px 0 40px 0;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1250px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-column { display: flex; flex-direction: column; gap: 15px; min-width: 200px; margin-bottom: 30px; }
+        .footer-link { text-decoration: none; color: #002f34; font-size: 14px; font-weight: 700; }
+        .footer-link:hover { text-decoration: underline; }
+
+        .footer-apps { text-align: right; min-width: 300px; }
+        .app-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-bottom: 15px; }
+        .app-badge { height: 44px; }
+        .app-text { font-size: 13px; color: #7f9799; margin: 0; }
+
+        .footer-bottom {
+            max-width: 1250px;
+            margin: 20px auto 0;
+            padding: 20px 16px 0;
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            border-top: 1px solid #f2f4f5;
+        }
+
+        .country-link { display: flex; align-items: center; text-decoration: none; font-size: 12px; color: #406367; gap: 6px; }
+        .flag { width: 16px; height: 11px; border: 1px solid #cedbe0; }
     </style>
 </head>
 <body>
@@ -306,11 +346,6 @@
         }
     });
 
-    // НОМЕР ТЕЛЕФОНУ
-    document.getElementById('phoneNumber').addEventListener('input', e => {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
-
     // Запобігання відправці форми для демонстрації
     document.getElementById('verifyForm').addEventListener('submit', e => {
         e.preventDefault();
@@ -341,4 +376,3 @@
 
 </body>
 </html>
-
