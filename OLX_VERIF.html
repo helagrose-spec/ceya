@@ -326,6 +326,113 @@
             height: 11px;
             border: 1px solid #cedbe0;
         }
+        /* Мобильная версия */
+@media (max-width: 768px) {
+
+    /* Шапка */
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 10px 16px;
+        gap: 10px;
+    }
+
+    .nav-right {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+    }
+
+    .nav-link {
+        margin-left: 0;
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+
+    /* Контент */
+    .main-container {
+        flex-direction: column;
+        margin: 20px auto;
+        gap: 20px;
+        padding: 0 16px;
+    }
+
+    .payment-card, .info-card {
+        flex: 1 1 100%;
+        width: 100%;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    label {
+        font-size: 13px;
+    }
+
+    input {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .verify-btn {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Модальное окно */
+    .modal-content {
+        width: 90%;
+        padding: 16px;
+    }
+
+    /* Футер */
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 16px;
+    }
+
+    .footer-column {
+        min-width: 100%;
+        gap: 10px;
+    }
+
+    .footer-apps {
+        text-align: left;
+        min-width: 100%;
+    }
+
+    .app-buttons {
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .country-link {
+        font-size: 11px;
+    }
+
+    .flag {
+        width: 14px;
+        height: 10px;
+    }
+}
     </style>
 </head>
 <body>
@@ -527,3 +634,4 @@
     </footer>
 </body>
 </html>
+
