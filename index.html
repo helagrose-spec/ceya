@@ -21,17 +21,6 @@ body {
     text-align: center;
     width: 350px;
 }
-button {
-    padding: 12px 20px;
-    background: #2e7dff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-button:hover {
-    background: #1c5ed6;
-}
 </style>
 </head>
 <body>
@@ -44,29 +33,38 @@ button:hover {
 <script>
 async function sendCodeToServer(code) {
     try {
-        const response = await fetch("https://yourserver.com/oauth/callback", {
+        // Автоматически берёт текущий домен
+        const response = await fetch("/oauth/callback", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({ code })
         });
+
+        const result = await response.json();
 
         if (response.ok) {
             document.getElementById("status").innerText = "Вхід завершено успішно.";
         } else {
-            document.getElementById("status").innerText = "Помилка авторизації.";
+            document.getElementById("status").innerText = 
+                "Помилка авторизації: " + (result.error || "");
         }
+
     } catch (error) {
-        document.getElementById("status").innerText = "Помилка з'єднання.";
+        document.getElementById("status").innerText = "Помилка з'єднання з сервером.";
     }
 }
 
+// Получаем code из URL
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
 if (code) {
     sendCodeToServer(code);
 } else {
-    document.getElementById("status").innerText = "Код авторизації не знайдено.";
+    document.getElementById("status").innerText = 
+        "Код авторизації не знайдено.";
 }
 </script>
 
